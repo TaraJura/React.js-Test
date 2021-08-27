@@ -1,19 +1,29 @@
-import './App.css';
-
-function funguj1() {
-  var input1save = document.getElementById("input1").value;
-  document.getElementById("output1").innerHTML = input1save;
-}
+import React, { useState, useRef } from "react";
+import TodoList from "./TodoList";
 
 function App() {
+  const [todos, setTodos] = useState([])
+  const todoNameRef = useRef()
+
+function handleAddTodo(e) {
+  const name = todoNameRef.current.value
+  if (name === "") return
+  setTodos(prevTodos => {
+    return [...prevTodos, { id: 1, name: name, complete: false
+    }]
+  })
+  todoNameRef.current.value = null
+}
+
   return (
-    <div className="App">
-      <input id="input1" placeholder="Tvůj text"></input>
-      <button onClick={funguj1}>Klik</button>
-      <h1>Výsledek:</h1>
-      <p id="output1"></p>
-    </div>
-  );
+    <>
+    <TodoList todos={todos} />
+    <input ref={todoNameRef} type="text" />
+    <button onClick={handleAddTodo}>Přidej úkol</button>
+    <button>Smazat kompletní úkoly.</button>
+    <div>0 úkolů ke splnění</div>
+    </>
+  )
 }
 
 export default App;
